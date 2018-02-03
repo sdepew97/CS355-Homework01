@@ -2,9 +2,6 @@
 #include <signal.h>
 #include <stdio.h>
 
-int globalInteruptsSinceLastSecond;
-int globalTotalInterupts;
-
 /*
  * Write a program that will show the rate of interrupts.
  * Each second it should print the number of interrupts (1)
@@ -12,15 +9,16 @@ int globalTotalInterupts;
  * interrupts since boot time.
  */
 
-//signal handler
+//function definitions
 void alarmHandler(int value);
 void readProcFile();
 void errorMessage();
 
+//global variables for tracking seconds
 float processesLastSecond = -1;
 float processesSinceBoot = -1;
 
-int main(void)
+int main(int argc, char *argv[])
 {
     //register signal and set alarm
     signal(SIGALRM, alarmHandler);
@@ -87,5 +85,5 @@ void readProcFile()
 
 void errorMessage()
 {
-    printf("error occurred in program");
+    printf("unforeseen error occurred");
 }
