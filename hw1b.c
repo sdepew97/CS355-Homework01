@@ -4,24 +4,20 @@
 #include <sys/time.h>
 #include <signal.h>
 #include <stdlib.h>
+#include <memory.h>
 
 #define INTERVAL_SECS 		1
 #define INTERVAL_MICROSECS 	0
 #define VALUE_SECS 		1
 #define VALUE_MICROSECS 	0
 
-/*
-    if (argc > 1) {
-        printf("Usage: %s takes no arguments, ctrl-c to quit\n", argv[0]);
-        exit(0);
-    }
-     */
-
+char *correctInput = "-s\0";
 
 //function definitions
 void alarmHandler(int value);
-void setrtimer(struct itimerval *);
-void readProcFile();
+void setrtimer(struct itimerval *ivPtr, int seconds, int microsecs);
+void parseCmd(int argc, char *argv[], int *sec);
+void readProcFile(int sec);
 void errorMessage();
 
 //global variables for tracking seconds
@@ -29,25 +25,46 @@ float processesLastSecond = -1;
 float processesSinceBoot = -1;
 
 int main(int argc, char *argv[]) {
+
+
     struct itimerval realt;
+
+    /*
+    if (argc > 1) {
+        printf("Usage: %s takes no arguments, ctrl-c to quit\n", argv[0]);
+        exit(0);
+    }
+     */
 
     signal(SIGALRM, alarmHandler); //add error for signal alarm thing
 
     //register signal and set alarm
-    setrtimer(&realt);
+    int sec = INTERVAL_SECS;
+    int microsec = INTERVAL_MICROSECS;
+    if(argc == 1) {
+        //call normally
+        printf("%d %d\n", sec, microsec);
+        setrtimer(&realt, sec, microsec);
+    }
+    else if(argc == 3) { //number of arguments should either be one or three, but nothing else
+        //set sec and microsec differently based on commandline input
+        parseCmd(argc, argv, &sec);
+        printf("%d %d\n", sec, microsec);
+        setrtimer(&realt, sec, microsec);
+    }
+    else {
+        errorMessage();
+    }
 
     if (setitimer(ITIMER_REAL, &realt, NULL) == -1) {
         errorMessage();
     }
 
-    printf("stop 3\n");
-
     while (1) {
-        printf("stop 4\n");
-        int pauseValue = pause(); //TODO: figure out why this line is a huge problem...???
+        int pauseValue = pause();
 
         if (pauseValue == -1) {
-            readProcFile();
+            readProcFile(sec);
         } else {
             errorMessage();
         }
@@ -58,6 +75,7 @@ int main(int argc, char *argv[]) {
 
 //signal handler
 void alarmHandler(int value) {
+    //reset signal handler //TODO: Check what should be done here...
     signal(SIGALRM, alarmHandler);
 }
 
@@ -65,21 +83,23 @@ void alarmHandler(int value) {
   Initialize the ITIMER_REAL interval timer.
   Its interval is one second.  Its initial value is one second.
 */
-
-//void setrtimer(struct itimerval *ivPtr) {
-//    ivPtr->it_interval.tv_sec = INTERVAL_SECS;
-//    ivPtr->it_interval.tv_usec = INTERVAL_MICROSECS;
-//    ivPtr->it_value.tv_sec = VALUE_SECS;
-//    ivPtr->it_interval.tv_usec = VALUE_MICROSECS; //TODO: understand why this doesn't work!??!!
-//}
-
-void setrtimer(struct itimerval *ivPtr) {
-    ivPtr->it_value.tv_sec = INTERVAL_SECS;
-    ivPtr->it_value.tv_usec = INTERVAL_MICROSECS;
+void setrtimer(struct itimerval *ivPtr, int seconds, int microsecs) {
+    ivPtr->it_value.tv_sec = seconds;
+    ivPtr->it_value.tv_usec = microsecs;
     ivPtr->it_interval = ivPtr->it_value;
 }
 
-void readProcFile() {
+void parseCmd(int argc, char *argv[], int *sec){
+    if(strcmp(argv[1], correctInput) == 0){
+        *sec = *argv[2]-'0'; //only works with 0-9! :/
+        //TODO: check that sec is more than zero
+    }
+    else {
+        errorMessage();
+    }
+}
+
+void readProcFile(int sec) {
     int currentChar = 0;
     FILE *file;
 
@@ -99,7 +119,7 @@ void readProcFile() {
 
             //have to have logged value for processes since boot to do the computation
             if (processesLastSecond != -1) {
-                printf("Processes in last second: %f\n",
+                printf("Processes in last %d seconds: %f\n", sec,
                        processesSinceBoot - processesLastSecond); //TODO: check computation correct with TA's
             }
 
@@ -112,67 +132,9 @@ void readProcFile() {
     } else {
         errorMessage();
     }
-
-    printf("test loop");
 }
 
 void errorMessage() {
     printf("unforeseen error occurred\n");
     exit(1);
 }
-
-/*
- * setitimer.c - simple use of the interval timer
- */
-
-#include <sys/time.h>		/* for setitimer */
-#include <unistd.h>		/* for pause/* function prototype */
-void DoStuff(void);
-void setitimerVal(struct itimerval *ivPtr);
-
-//int main(int argc, char *argv[]) {
-//
-//    struct itimerval it_val;	/* for setting itimer */
-//
-//    /* Upon SIGALRM, call DoStuff().
-//     * Set interval timer.  We want frequency in ms,
-//     * but the setitimer call needs seconds and useconds. */
-//    if (signal(SIGALRM, (void (*)(int)) DoStuff) == SIG_ERR) {
-//        perror("Unable to catch SIGALRM");
-//        exit(1);
-//    }
-//
-//    setitimerVal(&it_val);
-//
-//    if (setitimer(ITIMER_REAL, &it_val, NULL) == -1) {
-//        perror("error calling setitimer()");
-//        exit(1);
-//    }
-//
-//    while (1)
-//        pause();
-//
-//}
-//
-//void setitimerVal(struct itimerval *ivPtr){
-//    ivPtr->it_value.tv_sec =     INTERVAL_SECS;
-//    ivPtr->it_value.tv_usec =    INTERVAL_MICROSECS;
-//    ivPtr->it_interval = ivPtr->it_value;
-////    ivPtr->it_interval.tv_sec = 1;
-////    ivPtr->it_interval.tv_usec = 0;
-////    ivPtr->it_interval = ivPtr->it_value;
-//}
-//
-///*
-// * DoStuff
-// */
-//void DoStuff(void) {
-//
-//    printf("Timer went off.\n");
-//
-//} */
-#include <signal.h>		/* for signal */
-
-#define INTERVAL 500		/* number of milliseconds to go off */
-
-//
