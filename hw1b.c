@@ -21,8 +21,8 @@ void readProcFile(int sec);
 void errorMessage();
 
 //global variables for tracking seconds
-float processesLastSecond = -1;
-float processesSinceBoot = -1;
+int processesLastSecond = -1;
+int processesSinceBoot = -1;
 
 int main(int argc, char *argv[]) {
 
@@ -43,13 +43,11 @@ int main(int argc, char *argv[]) {
     int microsec = INTERVAL_MICROSECS;
     if(argc == 1) {
         //call normally
-        printf("%d %d\n", sec, microsec);
         setrtimer(&realt, sec, microsec);
     }
     else if(argc == 3) { //number of arguments should either be one or three, but nothing else
         //set sec and microsec differently based on commandline input
         parseCmd(argc, argv, &sec);
-        printf("%d %d\n", sec, microsec);
         setrtimer(&realt, sec, microsec);
     }
     else {
@@ -75,7 +73,7 @@ int main(int argc, char *argv[]) {
 
 //signal handler
 void alarmHandler(int value) {
-    //reset signal handler //TODO: Check what should be done here...
+    //reset signal handler //TODO: Check what should be done here... //done
     signal(SIGALRM, alarmHandler);
 }
 
@@ -87,6 +85,8 @@ void setrtimer(struct itimerval *ivPtr, int seconds, int microsecs) {
     ivPtr->it_value.tv_sec = seconds;
     ivPtr->it_value.tv_usec = microsecs;
     ivPtr->it_interval = ivPtr->it_value;
+//    ivPtr->it_interval.tv_sec = seconds;
+//    ivPtr->it_interval.tv_usec = ;
 }
 
 void parseCmd(int argc, char *argv[], int *sec){
@@ -112,15 +112,15 @@ void readProcFile(int sec) {
         }
 
         //read int in to variable value and check for errors
-        if (fscanf(file, "%f", &processesSinceBoot) <= EOF) {
+        if (fscanf(file, "%d", &processesSinceBoot) <= EOF) { //strtok() and atoi()
             errorMessage();
         } else {
-            printf("Processes since boot time: %f\n", processesSinceBoot);
+            printf("Processes since boot time: %d\n", processesSinceBoot);
 
             //have to have logged value for processes since boot to do the computation
             if (processesLastSecond != -1) {
-                printf("Processes in last %d seconds: %f\n", sec,
-                       processesSinceBoot - processesLastSecond); //TODO: check computation correct with TA's
+                printf("Processes in last %d seconds: %d\n", sec,
+                       processesSinceBoot - processesLastSecond); //TODO: check computation correct with TA's //done
             }
 
             //keep the boot value for next computation

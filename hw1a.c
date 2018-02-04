@@ -15,8 +15,8 @@ void readProcFile();
 void errorMessage();
 
 //global variables for tracking seconds
-float processesLastSecond = -1;
-float processesSinceBoot = -1;
+long int processesLastSecond = -1;
+long int processesSinceBoot = -1;
 
 int main(int argc, char *argv[])
 {
@@ -46,30 +46,28 @@ void alarmHandler(int value) {
         errorMessage();
 }
 
-void readProcFile()
-{
+void readProcFile() {
     int currentChar = 0;
     FILE *file;
 
     file = fopen("/proc/stat", "r");
 
-    if(file!=NULL)
-    {
+    if (file != NULL) {
         //have to get to the right place in the stat file, so that next pointer is to a numerical value
-        while(currentChar != 'r') {
+        while (currentChar != 'r') {
             currentChar = fgetc(file);
         }
 
         //read int in to variable value and check for errors
-        if(fscanf(file, "%f", &processesSinceBoot) <= EOF) {
+        if (fscanf(file, "%ld", &processesSinceBoot) <= EOF) {
             errorMessage();
-        }
-        else {
-            printf("Processes since boot time: %f\n", processesSinceBoot);
+        } else {
+            printf("Processes since boot time: %ld\n", processesSinceBoot);
 
             //have to have logged value for processes since boot to do the computation
-            if(processesLastSecond != -1) {
-                printf("Processes in last second: %f\n", processesSinceBoot - processesLastSecond); //TODO: check computation correct with TA's
+            if (processesLastSecond != -1) {
+                printf("Processes in last second: %ld\n",
+                       processesSinceBoot - processesLastSecond);
             }
 
             //keep the boot value for next computation

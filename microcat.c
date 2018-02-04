@@ -20,12 +20,13 @@
 
 #include <unistd.h>
 #include <fcntl.h>
+#include <signal.h>
 
-//only for error message for error handling
-#include <printf.h>
+//only for error message for error handling //TODO: check if we can use methods not system calls for error handling
 #include <stdlib.h>
 
 //function definitions
+void signalHandler(int value);
 void writeFileToStdout(char *fileName);
 void errorMessage();
 
@@ -33,17 +34,30 @@ void errorMessage();
 
 int main(int argc, char *argv[]){
 
+    //register the signal handler
+    signal(SIGALRM, signalHandler);
+
+    alarm(2);
+
     //one input value, then take from stdin
     if(argc == 1){
-        int c;
+        char c;
 
+        //TODO fix weird printing bug!! it prints it out even after termination
         while(1) {
-            read(0, &c, 1);
-            if(c != '\n') {
-                write(1, &c, 1);
+            if (read(0, &c, 1) > 0) {
+                if (c != '\n') {
+                    if(write(1, &c, 1)<0) {
+                        errorMessage();
+                    }
+                } else {
+                    if(write(1, "\n", 1)<0) {
+                        errorMessage();
+                    }
+                }
             }
             else {
-                write(1, "\n", 1);
+                errorMessage();
             }
         }
     }
@@ -62,6 +76,12 @@ int main(int argc, char *argv[]){
     }
 
     return 0;
+}
+
+//signal handler
+void signalHandler(int value) {
+    write(STDOUT_FILENO, "\nHelp! I think I've been shot!!!\n\0", 33);
+    exit(0);
 }
 
 //read file contents and print out to stdout
@@ -88,6 +108,6 @@ void writeFileToStdout(char *fileName) {
 
 void errorMessage()
 {
-    printf("unforeseen error occurred");
+    write(1, "\nUnforeseen error occurred.\n\0", 26);
     exit(1);
 }
