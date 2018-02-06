@@ -11,18 +11,17 @@ void errorMessage();
 
 int main(int argc, char *argv[]){
 
-    //register the signal handlers using a loop
-    for(int i=SIGHUP; i<=SIGSYS; i++) {
+    //register the signal handlers using a loop (signals from 1...31)
+    for(int i=1; i<32; i++) {
+
         signal(i, signalHandler);
     }
 
-   //alarm(2); //TODO: check on error
+   alarm(2); //TODO: check on error
 
     //one input value, then take from stdin
     if(argc == 1) {
         char c;
-
-        //TODO: check with dianna about buffer...
         //TODO fix weird printing bug!! it prints it out even after termination //flush then terminate
         while (read(0, &c, 1) > 0) {
             if (c != '\n') {
@@ -37,7 +36,7 @@ int main(int argc, char *argv[]){
         }
     }
 
-    //cat the files that are input!
+    //cat the files that are input
     else if(argc > 1) {
         //print out files that are input after reading them and outputting their contents to the terminal!
         for(int i=1; i<argc; i++) {
@@ -45,7 +44,7 @@ int main(int argc, char *argv[]){
         }
     }
 
-    //an error occurred, so print a message to this effect
+    //an error occurred, so print a message to this effect or the user input invalid arguments
     else {
         errorMessage();
     }
@@ -57,7 +56,8 @@ int main(int argc, char *argv[]){
  * Signal handler that exits whenever a signal is caught
  */
 void signalHandler(int value) {
-    write(STDOUT_FILENO, "\nHelp! I think I've been shot!!!\n\0", 33);
+    int lengthOfString = 33;
+    write(STDOUT_FILENO, "\nHelp! I think I've been shot!!!\n\0", lengthOfString);
     exit(EXIT_SUCCESS);
 }
 
@@ -70,7 +70,7 @@ void writeFileToStdout(char *fileName) {
 
     //check that the file open worked correctly
     if (fileDescriptor != -1) {
-        //output contents to the terminal/stdout one byte at a time
+        //output contents to the terminal stdout one byte at a time
         char c;
         while (read(fileDescriptor, &c, 1) > 0) { //check that read was successful
             if (write(1, &c, 1) < 0) { //check that error did not occur with the write
@@ -91,6 +91,7 @@ void writeFileToStdout(char *fileName) {
  */
 void errorMessage()
 {
-    write(1, "\nUnforeseen error occurred.\n\0", 28);
+    int lengthOfString = 28;
+    write(1, "\nUnforeseen error occurred.\n\0", lengthOfString);
     exit(EXIT_FAILURE);
 }

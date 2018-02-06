@@ -60,39 +60,39 @@ CMAKE_SOURCE_DIR = /Users/Sarah/CLionProjects/Homework01
 CMAKE_BINARY_DIR = /Users/Sarah/CLionProjects/Homework01/cmake-build-debug
 
 #=============================================================================
-# Target rules for target CMakeFiles/Homework01.dir
+# Target rules for target CMakeFiles/hw1a.c.dir
 
 # All Build rule for target.
-CMakeFiles/Homework01.dir/all:
-	$(MAKE) -f CMakeFiles/Homework01.dir/build.make CMakeFiles/Homework01.dir/depend
-	$(MAKE) -f CMakeFiles/Homework01.dir/build.make CMakeFiles/Homework01.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/Sarah/CLionProjects/Homework01/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5 "Built target Homework01"
-.PHONY : CMakeFiles/Homework01.dir/all
+CMakeFiles/hw1a.c.dir/all:
+	$(MAKE) -f CMakeFiles/hw1a.c.dir/build.make CMakeFiles/hw1a.c.dir/depend
+	$(MAKE) -f CMakeFiles/hw1a.c.dir/build.make CMakeFiles/hw1a.c.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/Sarah/CLionProjects/Homework01/cmake-build-debug/CMakeFiles --progress-num=1,2,3 "Built target hw1a.c"
+.PHONY : CMakeFiles/hw1a.c.dir/all
 
 # Include target in all.
-all: CMakeFiles/Homework01.dir/all
+all: CMakeFiles/hw1a.c.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/Homework01.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/Sarah/CLionProjects/Homework01/cmake-build-debug/CMakeFiles 5
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/Homework01.dir/all
+CMakeFiles/hw1a.c.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/Sarah/CLionProjects/Homework01/cmake-build-debug/CMakeFiles 3
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/hw1a.c.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/Sarah/CLionProjects/Homework01/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/Homework01.dir/rule
+.PHONY : CMakeFiles/hw1a.c.dir/rule
 
 # Convenience name for target.
-Homework01: CMakeFiles/Homework01.dir/rule
+hw1a.c: CMakeFiles/hw1a.c.dir/rule
 
-.PHONY : Homework01
-
-# clean rule for target.
-CMakeFiles/Homework01.dir/clean:
-	$(MAKE) -f CMakeFiles/Homework01.dir/build.make CMakeFiles/Homework01.dir/clean
-.PHONY : CMakeFiles/Homework01.dir/clean
+.PHONY : hw1a.c
 
 # clean rule for target.
-clean: CMakeFiles/Homework01.dir/clean
+CMakeFiles/hw1a.c.dir/clean:
+	$(MAKE) -f CMakeFiles/hw1a.c.dir/build.make CMakeFiles/hw1a.c.dir/clean
+.PHONY : CMakeFiles/hw1a.c.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/hw1a.c.dir/clean
 
 .PHONY : clean
 

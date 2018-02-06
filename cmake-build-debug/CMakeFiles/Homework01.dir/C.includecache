@@ -6,15 +6,41 @@
 
 #IncludeRegexTransform: 
 
-/Users/Sarah/CLionProjects/Homework01/main.c
+/Users/Sarah/CLionProjects/Homework01/hw1a.c
 unistd.h
 -
 signal.h
 -
-sys/types.h
+stdio.h
+-
+stdlib.h
+-
+
+/Users/Sarah/CLionProjects/Homework01/hw1b.c
+unistd.h
+-
+sys/time.h
+-
+signal.h
+-
+memory.h
+-
+errno.h
 -
 stdio.h
 -
-sys/wait.h
+stdlib.h
+-
+limits.h
+-
+
+/Users/Sarah/CLionProjects/Homework01/microcat.c
+unistd.h
+-
+fcntl.h
+-
+signal.h
+-
+stdlib.h
 -
 

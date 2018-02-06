@@ -111,44 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Homework01
+# Target rules for targets named hw1a.c
 
 # Build rule for target.
-Homework01: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 Homework01
-.PHONY : Homework01
+hw1a.c: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 hw1a.c
+.PHONY : hw1a.c
 
 # fast build rule for target.
-Homework01/fast:
-	$(MAKE) -f CMakeFiles/Homework01.dir/build.make CMakeFiles/Homework01.dir/build
-.PHONY : Homework01/fast
-
-hw1a.o: hw1a.c.o
-
-.PHONY : hw1a.o
-
-# target to build an object file
-hw1a.c.o:
-	$(MAKE) -f CMakeFiles/Homework01.dir/build.make CMakeFiles/Homework01.dir/hw1a.c.o
-.PHONY : hw1a.c.o
-
-hw1a.i: hw1a.c.i
-
-.PHONY : hw1a.i
-
-# target to preprocess a source file
-hw1a.c.i:
-	$(MAKE) -f CMakeFiles/Homework01.dir/build.make CMakeFiles/Homework01.dir/hw1a.c.i
-.PHONY : hw1a.c.i
-
-hw1a.s: hw1a.c.s
-
-.PHONY : hw1a.s
-
-# target to generate assembly for a file
-hw1a.c.s:
-	$(MAKE) -f CMakeFiles/Homework01.dir/build.make CMakeFiles/Homework01.dir/hw1a.c.s
-.PHONY : hw1a.c.s
+hw1a.c/fast:
+	$(MAKE) -f CMakeFiles/hw1a.c.dir/build.make CMakeFiles/hw1a.c.dir/build
+.PHONY : hw1a.c/fast
 
 hw1b.o: hw1b.c.o
 
@@ -156,7 +129,7 @@ hw1b.o: hw1b.c.o
 
 # target to build an object file
 hw1b.c.o:
-	$(MAKE) -f CMakeFiles/Homework01.dir/build.make CMakeFiles/Homework01.dir/hw1b.c.o
+	$(MAKE) -f CMakeFiles/hw1a.c.dir/build.make CMakeFiles/hw1a.c.dir/hw1b.c.o
 .PHONY : hw1b.c.o
 
 hw1b.i: hw1b.c.i
@@ -165,7 +138,7 @@ hw1b.i: hw1b.c.i
 
 # target to preprocess a source file
 hw1b.c.i:
-	$(MAKE) -f CMakeFiles/Homework01.dir/build.make CMakeFiles/Homework01.dir/hw1b.c.i
+	$(MAKE) -f CMakeFiles/hw1a.c.dir/build.make CMakeFiles/hw1a.c.dir/hw1b.c.i
 .PHONY : hw1b.c.i
 
 hw1b.s: hw1b.c.s
@@ -174,7 +147,7 @@ hw1b.s: hw1b.c.s
 
 # target to generate assembly for a file
 hw1b.c.s:
-	$(MAKE) -f CMakeFiles/Homework01.dir/build.make CMakeFiles/Homework01.dir/hw1b.c.s
+	$(MAKE) -f CMakeFiles/hw1a.c.dir/build.make CMakeFiles/hw1a.c.dir/hw1b.c.s
 .PHONY : hw1b.c.s
 
 microcat.o: microcat.c.o
@@ -183,7 +156,7 @@ microcat.o: microcat.c.o
 
 # target to build an object file
 microcat.c.o:
-	$(MAKE) -f CMakeFiles/Homework01.dir/build.make CMakeFiles/Homework01.dir/microcat.c.o
+	$(MAKE) -f CMakeFiles/hw1a.c.dir/build.make CMakeFiles/hw1a.c.dir/microcat.c.o
 .PHONY : microcat.c.o
 
 microcat.i: microcat.c.i
@@ -192,7 +165,7 @@ microcat.i: microcat.c.i
 
 # target to preprocess a source file
 microcat.c.i:
-	$(MAKE) -f CMakeFiles/Homework01.dir/build.make CMakeFiles/Homework01.dir/microcat.c.i
+	$(MAKE) -f CMakeFiles/hw1a.c.dir/build.make CMakeFiles/hw1a.c.dir/microcat.c.i
 .PHONY : microcat.c.i
 
 microcat.s: microcat.c.s
@@ -201,35 +174,8 @@ microcat.s: microcat.c.s
 
 # target to generate assembly for a file
 microcat.c.s:
-	$(MAKE) -f CMakeFiles/Homework01.dir/build.make CMakeFiles/Homework01.dir/microcat.c.s
+	$(MAKE) -f CMakeFiles/hw1a.c.dir/build.make CMakeFiles/hw1a.c.dir/microcat.c.s
 .PHONY : microcat.c.s
-
-writtenQuestions.o: writtenQuestions.c.o
-
-.PHONY : writtenQuestions.o
-
-# target to build an object file
-writtenQuestions.c.o:
-	$(MAKE) -f CMakeFiles/Homework01.dir/build.make CMakeFiles/Homework01.dir/writtenQuestions.c.o
-.PHONY : writtenQuestions.c.o
-
-writtenQuestions.i: writtenQuestions.c.i
-
-.PHONY : writtenQuestions.i
-
-# target to preprocess a source file
-writtenQuestions.c.i:
-	$(MAKE) -f CMakeFiles/Homework01.dir/build.make CMakeFiles/Homework01.dir/writtenQuestions.c.i
-.PHONY : writtenQuestions.c.i
-
-writtenQuestions.s: writtenQuestions.c.s
-
-.PHONY : writtenQuestions.s
-
-# target to generate assembly for a file
-writtenQuestions.c.s:
-	$(MAKE) -f CMakeFiles/Homework01.dir/build.make CMakeFiles/Homework01.dir/writtenQuestions.c.s
-.PHONY : writtenQuestions.c.s
 
 # Help Target
 help:
@@ -239,19 +185,13 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... Homework01"
-	@echo "... hw1a.o"
-	@echo "... hw1a.i"
-	@echo "... hw1a.s"
+	@echo "... hw1a.c"
 	@echo "... hw1b.o"
 	@echo "... hw1b.i"
 	@echo "... hw1b.s"
 	@echo "... microcat.o"
 	@echo "... microcat.i"
 	@echo "... microcat.s"
-	@echo "... writtenQuestions.o"
-	@echo "... writtenQuestions.i"
-	@echo "... writtenQuestions.s"
 .PHONY : help
 
 
