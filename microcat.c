@@ -17,19 +17,16 @@ int main(int argc, char *argv[]){
         signal(i, signalHandler);
     }
 
-   alarm(2); //TODO: check on error
-
-    //one input value, then take from stdin
+    //one input value, then take from stdin one character at a time
     if(argc == 1) {
         char c;
-        //TODO fix weird printing bug!! it prints it out even after termination //flush then terminate
-        while (read(0, &c, 1) > 0) {
+        while (read(STDIN_FILENO, &c, 1) > 0) {
             if (c != '\n') {
                 if (write(1, &c, 1) < 0) {
                     errorMessage();
                 }
             } else {
-                if (write(1, "\n", 1) < 0) {
+                if (write(STDOUT_FILENO, "\n", 1) < 0) {
                     errorMessage();
                 }
             }
