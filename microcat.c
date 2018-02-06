@@ -88,7 +88,7 @@ void writeFileToStdout(char *fileName) {
  */
 void errorMessage()
 {
-    int lengthOfString = 28;
-    write(1, "\nUnforeseen error occurred.\n\0", lengthOfString);
+    int lengthOfString = 26;
+    write(1, "Unforeseen error occurred.\n\0", lengthOfString);
     exit(EXIT_FAILURE);
 }
