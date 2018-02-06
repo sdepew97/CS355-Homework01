@@ -1,6 +1,6 @@
 #include <unistd.h>
 #include <fcntl.h>
-
+#include <signal.h>
 //only for error message for error handling
 #include <stdlib.h>
 
