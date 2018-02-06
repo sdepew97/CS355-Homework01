@@ -26,8 +26,8 @@ void errorMessage();
 
 int main(int argc, char *argv[]) {
     //local variables for main
-    int sec = INTERVAL_SECS;
-    int microsec = INTERVAL_MICROSECS;
+    long long int sec = INTERVAL_SECS;
+    long long int microsec = INTERVAL_MICROSECS;
     struct itimerval realt;
 
     //register signal
@@ -104,20 +104,20 @@ void parseCmd(int argc, char *argv[], long long int *sec){
 
         /* test return to number and errno values */
         if (nptr == endptr) {
-            printf(" number : %lu  invalid  (no digits found, 0 returned)\n", number);
+            printf(" number : %lld  invalid  (no digits found, 0 returned)\n", number);
             errorMessage();
         } else if (errno == ERANGE && number == LONG_MIN) {
-            printf(" number : %lu  invalid  (underflow occurred)\n", number);
+            printf(" number : %lld  invalid  (underflow occurred)\n", number);
             errorMessage();
         } else if (errno == ERANGE && number == LONG_MAX) {
-            printf(" number : %lu  invalid  (overflow occurred)\n", number);
+            printf(" number : %lld  invalid  (overflow occurred)\n", number);
             errorMessage();
         } else if (errno == EINVAL) { /* not in all c99 implementations - gcc OK */
-            printf(" number : %lu  invalid  (base contains unsupported value)\n", number);
+            printf(" number : %lld  invalid  (base contains unsupported value)\n", number);
             errorMessage();
         }
         else if (errno != 0 && number == 0) {
-            printf(" number : %lu  invalid  (unspecified error occurred)\n", number);
+            printf(" number : %lld  invalid  (unspecified error occurred)\n", number);
             errorMessage();
         }
 
