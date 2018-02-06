@@ -7,6 +7,7 @@ set(CMAKE_DEPENDS_CHECK_C
   "/Users/Sarah/CLionProjects/Homework01/hw1a.c" "/Users/Sarah/CLionProjects/Homework01/cmake-build-debug/CMakeFiles/Homework01.dir/hw1a.c.o"
   "/Users/Sarah/CLionProjects/Homework01/hw1b.c" "/Users/Sarah/CLionProjects/Homework01/cmake-build-debug/CMakeFiles/Homework01.dir/hw1b.c.o"
   "/Users/Sarah/CLionProjects/Homework01/microcat.c" "/Users/Sarah/CLionProjects/Homework01/cmake-build-debug/CMakeFiles/Homework01.dir/microcat.c.o"
+  "/Users/Sarah/CLionProjects/Homework01/writtenQuestions.c" "/Users/Sarah/CLionProjects/Homework01/cmake-build-debug/CMakeFiles/Homework01.dir/writtenQuestions.c.o"
   )
 set(CMAKE_C_COMPILER_ID "AppleClang")
 

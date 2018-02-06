@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/Homework01.dir/hw1a.c.o"
   "CMakeFiles/Homework01.dir/hw1b.c.o"
   "CMakeFiles/Homework01.dir/microcat.c.o"
+  "CMakeFiles/Homework01.dir/writtenQuestions.c.o"
   "Homework01.pdb"
   "Homework01"
 )

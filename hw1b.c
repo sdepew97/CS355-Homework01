@@ -5,58 +5,52 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 #define INTERVAL_SECS 		1
 #define INTERVAL_MICROSECS 	0
 
+//global variables
 char *correctInput = "-s\0";
-
-//function definitions
-void alarmHandler(int value);
-void setrtimer(struct itimerval *ivPtr, int seconds, int microsecs);
-void parseCmd(int argc, char *argv[], int *sec);
-void readProcFile(int sec);
-void errorMessage();
 
 //global variables for tracking seconds
 long int processesLastSecond = -1;
 long int processesSinceBoot = -1;
 
+//function definitions
+void alarmHandler(int value);
+void setrtimer(struct itimerval *ivPtr, int seconds, int microsecs);
+void parseCmd(int argc, char *argv[], long long int *sec);
+void readProcFile(int sec);
+void errorMessage();
+
 int main(int argc, char *argv[]) {
-
-
-    struct itimerval realt;
-
-    //TODO: print instructions on use
-    /*
-    if (argc > 1) {
-        printf("Usage: %s takes no arguments, ctrl-c to quit\n", argv[0]);
-        exit(0);
-    }
-     */
-
-    signal(SIGALRM, alarmHandler); //add error for signal alarm thing
-
-    //register signal and set alarm
+    //local variables for main
     int sec = INTERVAL_SECS;
     int microsec = INTERVAL_MICROSECS;
-    if(argc == 1) {
+    struct itimerval realt;
+
+    //register signal
+    signal(SIGALRM, alarmHandler); //TODO: handle any signal registering errors
+
+    //number of arguments should either be one or three, but nothing else
+    if (argc == 1) { //one input
         //call normally
         setrtimer(&realt, sec, microsec);
-    }
-    else if(argc == 3) { //number of arguments should either be one or three, but nothing else
+    } else if (argc == 3) { //call with terminal flag and input
         //set sec and microsec differently based on commandline input
         parseCmd(argc, argv, &sec);
         setrtimer(&realt, sec, microsec);
-    }
-    else {
+    } else {
         errorMessage();
     }
 
+    //check that the setitimer was set properly and if not raise an error message
     if (setitimer(ITIMER_REAL, &realt, NULL) == -1) {
         errorMessage();
     }
 
+    //wait for signals in the while loop
     while (1) {
         int pauseValue = pause();
 
@@ -70,41 +64,74 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
-//signal handler
+/*
+ * Signal Handler that resets the signal() function
+ */
 void alarmHandler(int value) {
-    //reset signal handler //TODO: Check what should be done here... //done
+    //reset signal handler
     signal(SIGALRM, alarmHandler);
 }
 
 /*
   Initialize the ITIMER_REAL interval timer.
-  Its interval is one second.  Its initial value is one second.
+  Its interval is one second. Its initial value is one second.
 */
 void setrtimer(struct itimerval *ivPtr, int seconds, int microsecs) {
     ivPtr->it_value.tv_sec = seconds;
     ivPtr->it_value.tv_usec = microsecs;
-    ivPtr->it_interval = ivPtr->it_value;
-//    ivPtr->it_interval.tv_sec = seconds;
-//    ivPtr->it_interval.tv_usec = ;
+    ivPtr->it_interval.tv_sec = seconds;
+    ivPtr->it_interval.tv_usec = microsecs;
 }
 
-void parseCmd(int argc, char *argv[], int *sec){
-    if(strcmp(argv[1], correctInput) == 0){
-        //check that input is an integer
-        char *ptr;
-        long ret;
+/*
+ * Parse the command line input and ensure that the user has put in the correct information
+ */
+void parseCmd(int argc, char *argv[], long long int *sec){
+    //check that -s flag was input correctly, otherwise error
+    if(strcmp(argv[1], correctInput) == 0) {
+        //check that input is correctly an integer
+        //(error checking gotten from stack overflow)
+        const char *nptr = argv[1];                     /* string to read               */
+        char *endptr = NULL;                            /* pointer to additional chars  */
+        int base = 10;                                  /* numeric base (default 10)    */
+        long long int number = 0;                       /* variable holding return      */
 
-        ret = strtol(argv[2], &ptr, 10); //TODO: ask dianna about using this function
+        /* reset errno to 0 before call */
+        errno = 0;
 
-        if(ret != EINVAL && ret != ERANGE) { //TODO: error check
-            *sec = ret;
+        /* call to strtol assigning return to number */
+        number = strtol(nptr, &endptr, base);
+
+        /* test return to number and errno values */
+        if (nptr == endptr) {
+            printf(" number : %lu  invalid  (no digits found, 0 returned)\n", number);
+            errorMessage();
+        } else if (errno == ERANGE && number == LONG_MIN) {
+            printf(" number : %lu  invalid  (underflow occurred)\n", number);
+            errorMessage();
+        } else if (errno == ERANGE && number == LONG_MAX) {
+            printf(" number : %lu  invalid  (overflow occurred)\n", number);
+            errorMessage();
+        } else if (errno == EINVAL) { /* not in all c99 implementations - gcc OK */
+            printf(" number : %lu  invalid  (base contains unsupported value)\n", number);
+            errorMessage();
         }
+        else if (errno != 0 && number == 0) {
+            printf(" number : %lu  invalid  (unspecified error occurred)\n", number);
+            errorMessage();
+        }
+
+        //passed all the if statements and so can assigned the seconds value as the one input
+        *sec = number;
     }
     else {
         errorMessage();
     }
 }
 
+/*
+* Method to read the computer's proc file and parse the number of interrupts
+*/
 void readProcFile(int sec) {
     int currentChar = 0;
     FILE *file;
@@ -118,7 +145,7 @@ void readProcFile(int sec) {
         }
 
         //read int in to variable value and check for errors
-        if (fscanf(file, "%ld", &processesSinceBoot) <= EOF) { //strtok() and atoi()
+        if (fscanf(file, "%ld", &processesSinceBoot) <= EOF) {
             errorMessage();
         } else {
             printf("Processes since boot time: %ld\n", processesSinceBoot);
@@ -126,7 +153,7 @@ void readProcFile(int sec) {
             //have to have logged value for processes since boot to do the computation
             if (processesLastSecond != -1) {
                 printf("Processes in last %d seconds: %ld\n", sec,
-                       processesSinceBoot - processesLastSecond); //TODO: check computation correct with TA's //done
+                       processesSinceBoot - processesLastSecond);
             }
 
             //keep the boot value for next computation
@@ -140,7 +167,11 @@ void readProcFile(int sec) {
     }
 }
 
-void errorMessage() {
-    printf("unforeseen error occurred\n");
-    exit(1);
+/*
+ * Error method to handle any error in program
+ */
+void errorMessage()
+{
+    printf("unforeseen error occurred");
+    exit(EXIT_FAILURE);
 }

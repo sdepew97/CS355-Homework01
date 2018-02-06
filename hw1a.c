@@ -1,13 +1,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <stdio.h>
-
-/*
- * Write a program that will show the rate of interrupts.
- * Each second it should print the number of interrupts (1)
- * in the previous second, and (2) the total number of
- * interrupts since boot time.
- */
+#include <stdlib.h>
 
 //function definitions
 void alarmHandler(int value);
@@ -37,7 +31,9 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-//signal handler
+/*
+ * Signal Handler that resets the signal() function
+ */
 void alarmHandler(int value) {
     //set up next alarm call
     int valueRemaining = alarm(1);
@@ -46,6 +42,9 @@ void alarmHandler(int value) {
         errorMessage();
 }
 
+/*
+* Method to read the computer's proc file and parse the number of interrupts
+*/
 void readProcFile() {
     int currentChar = 0;
     FILE *file;
@@ -81,7 +80,11 @@ void readProcFile() {
     }
 }
 
+/*
+ * Error method to handle any error in program
+ */
 void errorMessage()
 {
     printf("unforeseen error occurred");
+    exit(EXIT_FAILURE);
 }

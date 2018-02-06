@@ -89,6 +89,9 @@
 		<Unit filename="/Users/Sarah/CLionProjects/Homework01/microcat.c">
 			<Option target="Homework01"/>
 		</Unit>
+		<Unit filename="/Users/Sarah/CLionProjects/Homework01/writtenQuestions.c">
+			<Option target="Homework01"/>
+		</Unit>
 		<Unit filename="/Users/Sarah/CLionProjects/Homework01/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

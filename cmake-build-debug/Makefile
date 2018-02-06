@@ -204,6 +204,33 @@ microcat.c.s:
 	$(MAKE) -f CMakeFiles/Homework01.dir/build.make CMakeFiles/Homework01.dir/microcat.c.s
 .PHONY : microcat.c.s
 
+writtenQuestions.o: writtenQuestions.c.o
+
+.PHONY : writtenQuestions.o
+
+# target to build an object file
+writtenQuestions.c.o:
+	$(MAKE) -f CMakeFiles/Homework01.dir/build.make CMakeFiles/Homework01.dir/writtenQuestions.c.o
+.PHONY : writtenQuestions.c.o
+
+writtenQuestions.i: writtenQuestions.c.i
+
+.PHONY : writtenQuestions.i
+
+# target to preprocess a source file
+writtenQuestions.c.i:
+	$(MAKE) -f CMakeFiles/Homework01.dir/build.make CMakeFiles/Homework01.dir/writtenQuestions.c.i
+.PHONY : writtenQuestions.c.i
+
+writtenQuestions.s: writtenQuestions.c.s
+
+.PHONY : writtenQuestions.s
+
+# target to generate assembly for a file
+writtenQuestions.c.s:
+	$(MAKE) -f CMakeFiles/Homework01.dir/build.make CMakeFiles/Homework01.dir/writtenQuestions.c.s
+.PHONY : writtenQuestions.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -222,6 +249,9 @@ help:
 	@echo "... microcat.o"
 	@echo "... microcat.i"
 	@echo "... microcat.s"
+	@echo "... writtenQuestions.o"
+	@echo "... writtenQuestions.i"
+	@echo "... writtenQuestions.s"
 .PHONY : help
 
 
