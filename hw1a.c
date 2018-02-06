@@ -88,6 +88,6 @@ void readProcFile() {
  */
 void errorMessage()
 {
-    printf("unforeseen error occurred");
+    printf("Unforeseen error occurred.\n");
     exit(EXIT_FAILURE);
 }

@@ -91,7 +91,7 @@ void parseCmd(int argc, char *argv[], long long int *sec){
     if(strcmp(argv[1], correctInput) == 0) {
         //check that input is correctly an integer
         //(error checking gotten from stack overflow)
-        const char *nptr = argv[1];                     /* string to read               */
+        const char *nptr = argv[2];                     /* string to read               */
         char *endptr = NULL;                            /* pointer to additional chars  */
         int base = 10;                                  /* numeric base (default 10)    */
         long long int number = 0;                       /* variable holding return      */
@@ -172,6 +172,6 @@ void readProcFile(int sec) {
  */
 void errorMessage()
 {
-    printf("unforeseen error occurred");
+    printf("Unforeseen error occurred.\n");
     exit(EXIT_FAILURE);
 }
