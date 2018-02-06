@@ -4,6 +4,9 @@
 //only for error message for error handling
 #include <stdlib.h>
 
+//global variables
+int MAX_BUFFER = 1024;
+
 //function definitions
 void signalHandler(int value);
 void writeFileToStdout(char *fileName);
@@ -17,8 +20,8 @@ int main(int argc, char *argv[]){
         signal(i, signalHandler);
     }
 
-   alarm(2); //TODO: check on error
-
+    alarm(2); //TODO: check on error
+    
     //one input value, then take from stdin
     if(argc == 1) {
         char c;
@@ -57,6 +60,7 @@ int main(int argc, char *argv[]){
  */
 void signalHandler(int value) {
     int lengthOfString = 33;
+    write(STDIN_FILENO, "\n", 1);
     write(STDOUT_FILENO, "\nHelp! I think I've been shot!!!\n\0", lengthOfString);
     exit(EXIT_SUCCESS);
 }
