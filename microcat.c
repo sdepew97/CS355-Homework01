@@ -10,7 +10,7 @@
   basically the Unix cat with no flags. Remember that stdin is file descriptor 0, and
   stdout is file descriptor 1.
 • Modify microcat so that if a signal arrives it prints the message “Help! I think I’ve
-  been shot!!!” before terminating. //TODO: understand how to catch any signal...
+  been shot!!!” before terminating. //TODO: understand how to catch any signal... //TODO register a handler for all signals
 • Important: You may use only UNIX system calls (those documented in section 2 of
   the UNIX man pages, plus any of waitpid(), sleep(), signal(), kill(), exit() and select()
   (which are not strictly system calls on some systems)) to implement this program. You may
@@ -18,9 +18,10 @@
   of the manual).
 */
 
+//TODO: bug for control d termination,
+
 #include <unistd.h>
 #include <fcntl.h>
-#include <signal.h>
 
 //only for error message for error handling //TODO: check if we can use methods not system calls for error handling
 #include <stdlib.h>
@@ -34,30 +35,27 @@ void errorMessage();
 
 int main(int argc, char *argv[]){
 
-    //register the signal handler
-    signal(SIGALRM, signalHandler);
+    //register the signal handlers //TODO go through loop for all signals
+    for(int i=1; i<32; i++) { //register all signal handlers using a loop
+        signal(i, signalHandler);
+    }
 
-    alarm(2);
+   //alarm(2);
 
     //one input value, then take from stdin
-    if(argc == 1){
+    if(argc == 1) {
         char c;
 
-        //TODO fix weird printing bug!! it prints it out even after termination
-        while(1) {
-            if (read(0, &c, 1) > 0) {
-                if (c != '\n') {
-                    if(write(1, &c, 1)<0) {
-                        errorMessage();
-                    }
-                } else {
-                    if(write(1, "\n", 1)<0) {
-                        errorMessage();
-                    }
+        //TODO fix weird printing bug!! it prints it out even after termination //flush then terminate
+        while (read(0, &c, 1) > 0) {
+            if (c != '\n') {
+                if (write(1, &c, 1) < 0) {
+                    errorMessage();
                 }
-            }
-            else {
-                errorMessage();
+            } else {
+                if (write(1, "\n", 1) < 0) {
+                    errorMessage();
+                }
             }
         }
     }
@@ -108,6 +106,6 @@ void writeFileToStdout(char *fileName) {
 
 void errorMessage()
 {
-    write(1, "\nUnforeseen error occurred.\n\0", 26);
+    write(1, "\nUnforeseen error occurred.\n\0", 30);
     exit(1);
 }

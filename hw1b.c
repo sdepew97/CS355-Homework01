@@ -1,15 +1,13 @@
-#include <stdio.h>
-#include <stdbool.h>
 #include <unistd.h>
 #include <sys/time.h>
 #include <signal.h>
-#include <stdlib.h>
 #include <memory.h>
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #define INTERVAL_SECS 		1
 #define INTERVAL_MICROSECS 	0
-#define VALUE_SECS 		1
-#define VALUE_MICROSECS 	0
 
 char *correctInput = "-s\0";
 
@@ -21,14 +19,15 @@ void readProcFile(int sec);
 void errorMessage();
 
 //global variables for tracking seconds
-int processesLastSecond = -1;
-int processesSinceBoot = -1;
+long int processesLastSecond = -1;
+long int processesSinceBoot = -1;
 
 int main(int argc, char *argv[]) {
 
 
     struct itimerval realt;
 
+    //TODO: print instructions on use
     /*
     if (argc > 1) {
         printf("Usage: %s takes no arguments, ctrl-c to quit\n", argv[0]);
@@ -91,8 +90,15 @@ void setrtimer(struct itimerval *ivPtr, int seconds, int microsecs) {
 
 void parseCmd(int argc, char *argv[], int *sec){
     if(strcmp(argv[1], correctInput) == 0){
-        *sec = *argv[2]-'0'; //only works with 0-9! :/
-        //TODO: check that sec is more than zero
+        //check that input is an integer
+        char *ptr;
+        long ret;
+
+        ret = strtol(argv[2], &ptr, 10); //TODO: ask dianna about using this function
+
+        if(ret != EINVAL && ret != ERANGE) { //TODO: error check
+            *sec = ret;
+        }
     }
     else {
         errorMessage();
@@ -112,14 +118,14 @@ void readProcFile(int sec) {
         }
 
         //read int in to variable value and check for errors
-        if (fscanf(file, "%d", &processesSinceBoot) <= EOF) { //strtok() and atoi()
+        if (fscanf(file, "%ld", &processesSinceBoot) <= EOF) { //strtok() and atoi()
             errorMessage();
         } else {
-            printf("Processes since boot time: %d\n", processesSinceBoot);
+            printf("Processes since boot time: %ld\n", processesSinceBoot);
 
             //have to have logged value for processes since boot to do the computation
             if (processesLastSecond != -1) {
-                printf("Processes in last %d seconds: %d\n", sec,
+                printf("Processes in last %d seconds: %ld\n", sec,
                        processesSinceBoot - processesLastSecond); //TODO: check computation correct with TA's //done
             }
 
