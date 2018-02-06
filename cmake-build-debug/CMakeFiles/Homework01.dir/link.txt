@@ -1,1 +1,0 @@
-/Library/Developer/CommandLineTools/usr/bin/cc -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/Homework01.dir/hw1a.c.o CMakeFiles/Homework01.dir/hw1b.c.o CMakeFiles/Homework01.dir/microcat.c.o CMakeFiles/Homework01.dir/writtenQuestions.c.o  -o Homework01 
