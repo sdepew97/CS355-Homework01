@@ -54,7 +54,6 @@ int main(int argc, char *argv[]){
  */
 void signalHandler(int value) {
     int lengthOfString = 33;
-    write(STDIN_FILENO, "\n", 1);
     write(STDOUT_FILENO, "\nHelp! I think I've been shot!!!\n\0", lengthOfString);
     exit(EXIT_SUCCESS);
 }
