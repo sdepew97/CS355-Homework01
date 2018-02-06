@@ -1,7 +1,13 @@
 #include <unistd.h>
 #include <signal.h>
 #include <stdio.h>
-#include <stdlib.h>
+
+/*
+ * Write a program that will show the rate of interrupts.
+ * Each second it should print the number of interrupts (1)
+ * in the previous second, and (2) the total number of
+ * interrupts since boot time.
+ */
 
 //function definitions
 void alarmHandler(int value);
@@ -16,14 +22,18 @@ int main(int argc, char *argv[])
 {
     //register signal and set alarm
     signal(SIGALRM, alarmHandler);
-    alarm(1); //alarm to start us off...
+    alarm(1); //register first alarm to start us off...
 
+    //stay in a loop to catch the alarm values and pauses 
     while(1) {
         int pauseValue = pause();
 
+	//want to have the file read when pause "fails" and returns the error value of -1
         if (pauseValue == -1) {
             readProcFile();
-        } else {
+        }
+	//otherwise the signal was not caught and so an error should be thrown
+	else {
             errorMessage();
         }
     }
@@ -31,9 +41,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-/*
- * Signal Handler that resets the signal() function
- */
+//signal handler
 void alarmHandler(int value) {
     //set up next alarm call
     int valueRemaining = alarm(1);
@@ -43,12 +51,13 @@ void alarmHandler(int value) {
 }
 
 /*
-* Method to read the computer's proc file and parse the number of interrupts
-*/
+ * Method to read the computer's proc file and parse the number of interrupts 
+ */
 void readProcFile() {
     int currentChar = 0;
     FILE *file;
 
+    //Open the file
     file = fopen("/proc/stat", "r");
 
     if (file != NULL) {
@@ -80,9 +89,6 @@ void readProcFile() {
     }
 }
 
-/*
- * Error method to handle any error in program
- */
 void errorMessage()
 {
     printf("unforeseen error occurred");
