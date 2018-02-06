@@ -100,7 +100,7 @@ void parseCmd(int argc, char *argv[], long long int *sec){
         errno = 0;
 
         /* call to strtol assigning return to number */
-        number = strtol(nptr, &endptr, base);
+        number = strtoll(nptr, &endptr, base);
 
         /* test return to number and errno values */
         if (nptr == endptr) {
@@ -118,6 +118,10 @@ void parseCmd(int argc, char *argv[], long long int *sec){
         }
         else if (errno != 0 && number == 0) {
             printf(" number : %lld  invalid  (unspecified error occurred)\n", number);
+            errorMessage();
+        }
+        else if (errno == 0 && nptr && *endptr != 0) {
+            printf(" number : %lld    invalid  (since additional characters remain)\n", number);
             errorMessage();
         }
 
