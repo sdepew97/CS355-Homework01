@@ -14,8 +14,12 @@ long int processesSinceBoot = -1;
 
 int main(int argc, char *argv[])
 {
-    //register signal and set alarm
-    signal(SIGALRM, alarmHandler);
+    //register signal and check successful
+    if(signal(SIGALRM, alarmHandler) == SIG_ERR) {
+        errorMessage();
+    }
+
+    //set alarm
     alarm(1); //register first alarm to start us off...
 
     //stay in a loop to catch the alarm values and pauses 

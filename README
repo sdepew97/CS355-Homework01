@@ -1,6 +1,10 @@
-1. README: There must be a file called README, which contains any helpful information on how to compile and run your program. This includes:
 Your name: Sarah Depew
-How to compile: You should provide a Makefile and I should just have to type ’make’ to compile your program. You may leave this out if that is indeed so. Any extra work I have to do get the program to compile must be clearly explained there.
-How to run it: Explain how to execute your program if it’s not immediately obvious.
-Known Bugs and Limitations: List any known bugs, deficiencies, or limitations with re- spect to the project specifications. Documented bugs will receive less deduction versus uncaught ones.
-File directory: If you have multiple source files, (other than those created by the compiler), please briefly explain the purpose of each.
+
+How to compile: There is a Makefile, so just type make to make and clean.
+
+How to run it: run with ./<executable name> and <any parameters>. The programs run as requested in the assignment specifications.
+
+Known Bugs and Limitations: We discussed the alarm issue with microcat. In this instance, when there are characters in the buffer, they print out on the next terminal
+line when a signal is received. This is not a bug per-say, but I wanted to document it.
+
+File directory: N/A

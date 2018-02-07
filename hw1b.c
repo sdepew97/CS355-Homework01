@@ -30,8 +30,10 @@ int main(int argc, char *argv[]) {
     long long int microsec = INTERVAL_MICROSECS;
     struct itimerval realt;
 
-    //register signal
-    signal(SIGALRM, alarmHandler); //TODO: handle any signal registering errors
+    //register signal and check successful
+    if(signal(SIGALRM, alarmHandler) == SIG_ERR) {
+        errorMessage();
+    }
 
     //number of arguments should either be one or three, but nothing else
     if (argc == 1) { //one input

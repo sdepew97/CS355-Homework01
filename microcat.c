@@ -13,8 +13,10 @@ int main(int argc, char *argv[]){
 
     //register the signal handlers using a loop (signals from 1...31)
     for(int i=1; i<32; i++) {
-
-        signal(i, signalHandler);
+        //register signal and check that no error occurred 
+        if(signal(i, signalHandler) == SIG_ERR) {
+            errorMessage();
+        }
     }
     
     //one input value, then take from stdin one character at a time
