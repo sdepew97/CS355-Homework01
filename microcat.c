@@ -3,6 +3,7 @@
 #include <signal.h>
 //only for error message for error handling
 #include <stdlib.h>
+#include <stdio.h>
 
 //function definitions
 void signalHandler(int value);
@@ -13,9 +14,11 @@ int main(int argc, char *argv[]){
 
     //register the signal handlers using a loop (signals from 1...31)
     for(int i=1; i<32; i++) {
-        //register signal and check that no error occurred 
-        if(signal(i, signalHandler) == SIG_ERR) {
-            errorMessage();
+        //register signal and check that no error occurred
+        if (i != SIGKILL && i != SIGSTOP) { //SIGKILL and SIGSTOP cannot be caught
+            if (signal(i, signalHandler) == SIG_ERR) {
+                printf("Error with registering signal %d.", i);
+            }
         }
     }
     

@@ -7,4 +7,6 @@ How to run it: run with ./<executable name> and <any parameters>. The programs r
 Known Bugs and Limitations: We discussed the alarm issue with microcat. In this instance, when there are characters in the buffer, they print out on the next terminal
 line when a signal is received. This is not a bug per-say, but I wanted to document it.
 
+If you type in any string and then press CTRL-D
+
 File directory: N/A
